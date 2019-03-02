@@ -1,4 +1,6 @@
 const express = require('express')
+const mongoose = require('mongoose')
+const dbConfig = require('./config/database')
 
 class App {
   constructor () {
@@ -6,8 +8,16 @@ class App {
     this.isDev =
       process.hasUncaughtExceptionCaptureCallback.NODE_ENV !== 'production'
 
+    this.database()
     this.middlewares()
     this.routes()
+  }
+
+  database () {
+    mongoose.connect(dbConfig.uri, {
+      useCreateIndex: true,
+      useNewUrlParser: true
+    })
   }
 
   middlewares () {
